@@ -22,8 +22,8 @@ import com.khubla.quadrigacx.BaseResponse;
 
 public class OrderBookResponse extends BaseResponse {
    private Date timestamp;
-   double[][] bids;
-   double[][] asks;
+   private double[][] bids;
+   private double[][] asks;
 
    public double[][] getAsks() {
       return asks;
