@@ -120,7 +120,7 @@ public class TestQuadrigacx {
    @Test
    public void testSignature() {
       try {
-         final String sig = QuadrigacxSignature.generateSignatiure("1391683499", "230664ae53cbe5a07c6c389910540729", "JJHlXeDcFM", "3");
+         final String sig = QuadrigacxSignature.generateSignature("1391683499", "230664ae53cbe5a07c6c389910540729", "JJHlXeDcFM", "3");
          Assert.assertNotNull(sig);
          Assert.assertTrue(sig.compareTo("cdbf5cc64c70e1485fcf976cdf367960c2b28cfc28080973ce677cebb6db9681") == 0);
       } catch (final Exception e) {

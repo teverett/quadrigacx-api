@@ -31,7 +31,7 @@ public class BaseRequest {
 
    private String generateSignature(QuadrigacxAuthData authData, long nonce) {
       try {
-         return QuadrigacxSignature.generateSignatiure(Long.toString(nonce), authData.getSecret(), authData.getKey(), authData.getClientid());
+         return QuadrigacxSignature.generateSignature(Long.toString(nonce), authData.getSecret(), authData.getKey(), authData.getClientid());
       } catch (final Exception e) {
          e.printStackTrace();
          return null;

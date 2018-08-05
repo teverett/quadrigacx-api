@@ -23,7 +23,7 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
 public class QuadrigacxSignature {
-   public static String generateSignatiure(String nonce, String secret, String key, String clientId) {
+   public static String generateSignature(String nonce, String secret, String key, String clientId) {
       try {
          final String data = nonce + clientId + key;
          final SecretKeySpec secretKeySpec = new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256");
