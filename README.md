@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/teverett/quadrigacx-api.png?branch=master)](https://travis-ci.org/teverett/quadrigacx-api)
+
 # quadrigacx-api
 A Java API for [quadrigacx.com](https://www.quadrigacx.com/) based on the [v2 API](https://www.quadrigacx.com/api_info)
 
