@@ -19,10 +19,7 @@ package com.khubla.quadrigacx;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.khubla.quadrigacx.Quadrigacx;
 import com.khubla.quadrigacx.Quadrigacx.TransactionTimeframe;
-import com.khubla.quadrigacx.QuadrigacxAuthData;
-import com.khubla.quadrigacx.QuadrigacxSignature;
 import com.khubla.quadrigacx.reqresp.BalanceResponse;
 import com.khubla.quadrigacx.reqresp.OpenOrderResponse;
 import com.khubla.quadrigacx.reqresp.OrderBookResponse;
@@ -30,6 +27,7 @@ import com.khubla.quadrigacx.reqresp.TradingInfoResponse;
 import com.khubla.quadrigacx.reqresp.TransactionResponse;
 import com.khubla.quadrigacx.reqresp.UserTransactionResponse;
 
+@Test(enabled = false)
 public class TestQuadrigacx {
    @Test(enabled = false)
    public void testGetBalance() {
