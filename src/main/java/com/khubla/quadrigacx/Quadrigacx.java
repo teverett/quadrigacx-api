@@ -52,7 +52,6 @@ import com.khubla.quadrigacx.reqresp.UserTransactionResponse;
  * https://www.quadrigacx.com/api_info
  *
  * @author tom
- *
  */
 public class Quadrigacx {
    /**
@@ -86,8 +85,8 @@ public class Quadrigacx {
 
    /**
     * order status
+    * 
     * @author tom
-    *
     */
    public enum OrderStatus {
       cancelled(-1), active(0), partiallyfilled(1), complete(2);
@@ -104,8 +103,8 @@ public class Quadrigacx {
 
    /**
     * order type
+    * 
     * @author tom
-    *
     */
    public enum OrderType {
       buy(0), sell(1);
@@ -129,8 +128,8 @@ public class Quadrigacx {
 
    /**
     * transaction side
+    * 
     * @author tom
-    *
     */
    public enum TransactionSide {
       buy, sell
@@ -138,8 +137,8 @@ public class Quadrigacx {
 
    /**
     * transaction timeframe
+    * 
     * @author tom
-    *
     */
    public enum TransactionTimeframe {
       minute, hour
@@ -147,8 +146,8 @@ public class Quadrigacx {
 
    /**
     * transaction type
+    * 
     * @author tom
-    *
     */
    public enum TransactionType {
       deposit(0), withdrawl(1), trade(2);

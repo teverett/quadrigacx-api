@@ -16,11 +16,9 @@
  */
 package com.khubla.quadrigacx;
 
-import com.khubla.quadrigacx.QuadrigacxAuthData;
-
 public class TestAuthHelper {
    /**
-    * put your keys here 
+    * put your keys here
     */
    private static final String TESTING_KEY = "";
    private static final String TESTING_SECRET = "";
