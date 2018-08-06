@@ -25,17 +25,8 @@ public class BaseRequest {
       super();
       final long nonce = System.currentTimeMillis();
       this.nonce = Long.toString(nonce);
-      signature = generateSignature(authData, nonce);
+      signature = QuadrigacxSignature.generateSignature(this.nonce, authData.getSecret(), authData.getKey(), authData.getClientid());
       key = authData.getKey();
-   }
-
-   private String generateSignature(QuadrigacxAuthData authData, long nonce) {
-      try {
-         return QuadrigacxSignature.generateSignature(Long.toString(nonce), authData.getSecret(), authData.getKey(), authData.getClientid());
-      } catch (final Exception e) {
-         e.printStackTrace();
-         return null;
-      }
    }
 
    public String getKey() {
