@@ -54,6 +54,31 @@ import com.khubla.quadrigacx.reqresp.UserTransactionResponse;
  * @author tom
  */
 public class Quadrigacx {
+   public class AccountBalance {
+      private final double available;
+      private final double reserved;
+      private final double balance;
+
+      public AccountBalance(double available, double reserved, double balance) {
+         super();
+         this.available = available;
+         this.reserved = reserved;
+         this.balance = balance;
+      }
+
+      public double getAvailable() {
+         return available;
+      }
+
+      public double getBalance() {
+         return balance;
+      }
+
+      public double getReserved() {
+         return reserved;
+      }
+   }
+
    /**
     * books
     */
@@ -74,7 +99,7 @@ public class Quadrigacx {
     */
    public enum Book {
       btc_cad, btc_usd, eth_cad, eth_btc, ltc_cad, ltc_btc, bch_cad, bch_btc, btg_cad, btg_btc
-   }
+   };
 
    /**
     * currencies
@@ -85,7 +110,7 @@ public class Quadrigacx {
 
    /**
     * order status
-    * 
+    *
     * @author tom
     */
    public enum OrderStatus {
@@ -99,11 +124,11 @@ public class Quadrigacx {
       public int getValue() {
          return value;
       }
-   };
+   }
 
    /**
     * order type
-    * 
+    *
     * @author tom
     */
    public enum OrderType {
@@ -128,7 +153,7 @@ public class Quadrigacx {
 
    /**
     * transaction side
-    * 
+    *
     * @author tom
     */
    public enum TransactionSide {
@@ -137,7 +162,7 @@ public class Quadrigacx {
 
    /**
     * transaction timeframe
-    * 
+    *
     * @author tom
     */
    public enum TransactionTimeframe {
@@ -146,7 +171,7 @@ public class Quadrigacx {
 
    /**
     * transaction type
-    * 
+    *
     * @author tom
     */
    public enum TransactionType {
@@ -208,10 +233,43 @@ public class Quadrigacx {
       return invocationBuilder.post(Entity.entity(auth, MediaType.APPLICATION_JSON), BalanceResponse.class);
    }
 
+   public AccountBalance getCashBalance(Book book) {
+      final BalanceResponse balanceResponse = getBalance();
+      if (false == balanceResponse.isError()) {
+         final Hashtable<Book, AccountBalance> balances = new Hashtable<Book, AccountBalance>();
+         balances.put(Book.bch_cad, new AccountBalance(balanceResponse.getCad_available(), balanceResponse.getCad_reserved(), balanceResponse.getCad_balance()));
+         balances.put(Book.btc_cad, new AccountBalance(balanceResponse.getCad_available(), balanceResponse.getCad_reserved(), balanceResponse.getCad_balance()));
+         balances.put(Book.btc_usd, new AccountBalance(balanceResponse.getUsd_available(), balanceResponse.getUsd_reserved(), balanceResponse.getUsd_balance()));
+         balances.put(Book.btg_cad, new AccountBalance(balanceResponse.getCad_available(), balanceResponse.getCad_reserved(), balanceResponse.getCad_balance()));
+         balances.put(Book.eth_cad, new AccountBalance(balanceResponse.getCad_available(), balanceResponse.getCad_reserved(), balanceResponse.getCad_balance()));
+         return balances.get(book);
+      } else {
+         throw new RuntimeException("Error :" + balanceResponse.getError().getMessage());
+      }
+   }
+
    private Client getClient() {
       final ClientConfig config = new ClientConfig();
       config.register(JacksonJsonProvider.class);
       return ClientBuilder.newClient(config);
+   }
+
+   public AccountBalance getCoinBalance(Book book) {
+      final BalanceResponse balanceResponse = getBalance();
+      if (false == balanceResponse.isError()) {
+         final Hashtable<Book, AccountBalance> balances = new Hashtable<Book, AccountBalance>();
+         balances.put(Book.bch_btc, new AccountBalance(balanceResponse.getBch_available(), balanceResponse.getBch_reserved(), balanceResponse.getBch_balance()));
+         balances.put(Book.bch_cad, new AccountBalance(balanceResponse.getBch_available(), balanceResponse.getBch_reserved(), balanceResponse.getBch_balance()));
+         balances.put(Book.btc_cad, new AccountBalance(balanceResponse.getBtc_available(), balanceResponse.getBch_reserved(), balanceResponse.getBch_balance()));
+         balances.put(Book.btc_usd, new AccountBalance(balanceResponse.getBtc_available(), balanceResponse.getBch_reserved(), balanceResponse.getBch_balance()));
+         balances.put(Book.btg_btc, new AccountBalance(balanceResponse.getBtg_available(), balanceResponse.getBch_reserved(), balanceResponse.getBch_balance()));
+         balances.put(Book.btg_cad, new AccountBalance(balanceResponse.getBtg_available(), balanceResponse.getBch_reserved(), balanceResponse.getBch_balance()));
+         balances.put(Book.eth_btc, new AccountBalance(balanceResponse.getEth_available(), balanceResponse.getBch_reserved(), balanceResponse.getBch_balance()));
+         balances.put(Book.eth_cad, new AccountBalance(balanceResponse.getEth_available(), balanceResponse.getBch_reserved(), balanceResponse.getBch_balance()));
+         return balances.get(book);
+      } else {
+         throw new RuntimeException("Error :" + balanceResponse.getError().getMessage());
+      }
    }
 
    public double getFee(Book book) {

@@ -21,7 +21,7 @@ import com.khubla.quadrigacx.BaseResponse;
 public class BalanceResponse extends BaseResponse {
    /**
     * note that fees are in units of %. So a fee of .5 is ".5%" or 5/1000.
-    * 
+    *
     * @author tom
     */
    public class Fees {
