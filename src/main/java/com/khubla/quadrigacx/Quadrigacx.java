@@ -148,7 +148,7 @@ public class Quadrigacx {
     *
     */
    public enum TransactionType {
-      deposit(0), withdrawlk(1), trade(2);
+      deposit(0), withdrawl(1), trade(2);
       private final int value;
 
       TransactionType(final int newValue) {
