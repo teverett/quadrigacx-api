@@ -25,6 +25,9 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
+
 import com.khubla.quadrigacx.reqresp.BalanceResponse;
 import com.khubla.quadrigacx.reqresp.BuyLimitOrderRequest;
 import com.khubla.quadrigacx.reqresp.BuyLimitOrderResponse;
@@ -174,40 +177,42 @@ public class Quadrigacx {
    }
 
    public BuyLimitOrderResponse buyLimitOrder(Book book, double amount, double price) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("buy");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("buy");
       final BuyLimitOrderRequest buyLimitOrderParameters = new BuyLimitOrderRequest(authData, amount, price, book.name());
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       return invocationBuilder.post(Entity.entity(buyLimitOrderParameters, MediaType.APPLICATION_JSON), BuyLimitOrderResponse.class);
    }
 
    public BuyMarketOrderResponse buyMarketOrder(Book book, double amount) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("buy");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("buy");
       final BuyMarketOrderRequest buyMarketOrderParameters = new BuyMarketOrderRequest(authData, amount, book.name());
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       return invocationBuilder.post(Entity.entity(buyMarketOrderParameters, MediaType.APPLICATION_JSON), BuyMarketOrderResponse.class);
    }
 
    public boolean CancelOrder(String id) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("cancel_order");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("cancel_order");
       final CancelOrderRequest cancelOrderParameters = new CancelOrderRequest(authData, id);
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       return invocationBuilder.post(Entity.entity(cancelOrderParameters, MediaType.APPLICATION_JSON), Boolean.class);
    }
 
    public BalanceResponse getBalance() {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("balance");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("balance");
       final BaseRequest auth = new BaseRequest(authData);
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       // System.out.println(invocationBuilder.post(Entity.entity(auth, MediaType.APPLICATION_JSON), String.class));
       return invocationBuilder.post(Entity.entity(auth, MediaType.APPLICATION_JSON), BalanceResponse.class);
+   }
+
+   private Client getClient() {
+      final ClientConfig config = new ClientConfig();
+      config.register(JacksonJsonProvider.class);
+      return ClientBuilder.newClient(config);
    }
 
    public double getFee(Book book) {
@@ -229,9 +234,8 @@ public class Quadrigacx {
    }
 
    public OpenOrderResponse[] getOpenOrders(Book book) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("open_orders");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("open_orders");
       final OpenOrdersRequest openOrdersParameters = new OpenOrdersRequest(authData, book.name());
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       System.out.println(invocationBuilder.post(Entity.entity(openOrdersParameters, MediaType.APPLICATION_JSON), String.class));
@@ -239,9 +243,8 @@ public class Quadrigacx {
    }
 
    public OrderResponse getOrder(String id) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("lookup_order");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("lookup_order");
       final LookupOrderRequest lookupOrderParameters = new LookupOrderRequest(authData, id);
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       return invocationBuilder.post(Entity.entity(lookupOrderParameters, MediaType.APPLICATION_JSON), OrderResponse.class);
@@ -251,9 +254,8 @@ public class Quadrigacx {
     * https://api.quadrigacx.com/v2/order_book
     */
    public OrderBookResponse getOrderBook(Book book) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("order_book");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("order_book");
       final Invocation.Builder invocationBuilder = apiWebTarget.queryParam("book", book.name()).request(MediaType.APPLICATION_JSON);
       return invocationBuilder.get(OrderBookResponse.class);
    }
@@ -262,9 +264,8 @@ public class Quadrigacx {
     * https://api.quadrigacx.com/v2/ticker?book=XXX
     */
    public TradingInfoResponse getTradingInfo(Book book) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("ticker");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("ticker");
       final Invocation.Builder invocationBuilder = apiWebTarget.queryParam("book", book.name()).request(MediaType.APPLICATION_JSON);
       return invocationBuilder.get(TradingInfoResponse.class);
    }
@@ -273,36 +274,32 @@ public class Quadrigacx {
     * https://api.quadrigacx.com/v2/transactions
     */
    public TransactionResponse[] getTransactions(Book book, TransactionTimeframe transactionTimeframe) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("transactions");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("transactions");
       final String timeframe = transactionTimeframe == TransactionTimeframe.hour ? "hour" : "minute";
       final Invocation.Builder invocationBuilder = apiWebTarget.queryParam("book", book.name()).queryParam("time", timeframe).request(MediaType.APPLICATION_JSON);
       return invocationBuilder.get(TransactionResponse[].class);
    }
 
    public UserTransactionResponse[] getUserTransactions(int offset, int limit, Sort sort, Book book) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("user_transactions");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("user_transactions");
       final UserTransactionRequest userTransactionParameters = new UserTransactionRequest(authData, offset, limit, sort.toString(), book.name());
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       return invocationBuilder.post(Entity.entity(userTransactionParameters, MediaType.APPLICATION_JSON), UserTransactionResponse[].class);
    }
 
    public SellLimitOrderResponse sellLimitOrder(Book book, double amount, double price) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("sell");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("sell");
       final SellLimitOrderRequest sellLimitOrderParameters = new SellLimitOrderRequest(authData, amount, price, book.name());
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       return invocationBuilder.post(Entity.entity(sellLimitOrderParameters, MediaType.APPLICATION_JSON), SellLimitOrderResponse.class);
    }
 
    public SellMarketOrderResponse sellMarketOrder(Book book, double amount) {
-      final Client client = ClientBuilder.newClient();
-      final WebTarget webTarget = client.target(ROOT_API);
-      final WebTarget apiWebTarget = webTarget.path("sell");
+      final Client client = getClient();
+      final WebTarget apiWebTarget = client.target(ROOT_API).path("sell");
       final SellMarketOrderRequest sellMarketOrderParameters = new SellMarketOrderRequest(authData, amount, book.name());
       final Invocation.Builder invocationBuilder = apiWebTarget.request(MediaType.APPLICATION_JSON);
       return invocationBuilder.post(Entity.entity(sellMarketOrderParameters, MediaType.APPLICATION_JSON), SellMarketOrderResponse.class);
