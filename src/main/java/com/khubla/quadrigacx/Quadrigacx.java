@@ -98,7 +98,21 @@ public class Quadrigacx {
     * btc - bitcoin
     */
    public enum Book {
-      btc_cad, btc_usd, eth_cad, eth_btc, ltc_cad, ltc_btc, bch_cad, bch_btc, btg_cad, btg_btc
+      btc_cad("btc_cad"), btc_usd("btc_usd"), eth_cad("eth_cad"), eth_btc("eth_btc"), ltc_cad("ltc_cad"), ltc_btc("ltc_btc"), bch_cad("bch_cad"), bch_btc("bch_btc"), btg_cad("btg_cad"), btg_btc(
+            "btg_btc");
+      private String book;
+
+      Book(String book) {
+         this.book = book;
+      }
+
+      public String getBook() {
+         return book;
+      }
+
+      public void setBook(String book) {
+         this.book = book;
+      }
    };
 
    /**
