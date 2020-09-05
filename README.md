@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/teverett/quadrigacx-api.png?branch=master)](https://travis-ci.org/teverett/quadrigacx-api)
+![CI](https://github.com/teverett/quadrigacx-api/workflows/CI/badge.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6a0e9f8f626847319964d1a102382b12)](https://www.codacy.com/app/teverett/quadrigacx-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=teverett/quadrigacx-api&amp;utm_campaign=Badge_Grade)
 
 # quadrigacx-api
